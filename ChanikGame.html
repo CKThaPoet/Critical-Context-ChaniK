@@ -75,10 +75,20 @@
             if (isMouseOver(femaleZone)) {
                 rect(femaleZone.x, femaleZone.y, femaleZone.w, femaleZone.h);
             }
+
+            // Display the current mouse coordinates
+            displayCoordinates();
         }
 
         function isMouseOver(zone) {
             return mouseX > zone.x && mouseX < zone.x + zone.w && mouseY > zone.y && mouseY < zone.y + zone.h;
+        }
+
+        function displayCoordinates() {
+            fill(0);
+            noStroke();
+            textSize(16);
+            text(`MouseX: ${mouseX}, MouseY: ${mouseY}`, 10, height - 10);
         }
     </script>
 </body>
