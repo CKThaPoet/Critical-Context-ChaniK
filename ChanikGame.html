@@ -39,10 +39,17 @@
 </head>
 <body>
     <div id="popup" onclick="removePopup()">African American History: Interactive by Chani Kinsler *Click to Continue*</div>
+    <div id="endPopup" style="display: none;">All zones clicked! Zones clicked: <span id="zoneCount"></span></div>
+    <div id="buttons" style="display: none;">
+        <button class="button" onclick="resetGame()">Start Over</button>
+        <button class="button" onclick="continueGame()">Continue</button>
+    </div>
+    
     <script>
         let bgImage;
         let interactionZones;
         let clickedMessage = "";
+        let clickedZones = new Set();
 
         function preload() {
             // Load the background image
@@ -82,6 +89,18 @@
                     currentZone = zone;
                 }
             }
+            function resetGame() {
+    clickedZones.clear();
+    clickedMessage = "";
+    document.getElementById('endPopup').style.display = 'none';
+    document.getElementById('buttons').style.display = 'none';
+}
+
+function continueGame() {
+    clickedMessage = "";
+    document.getElementById('endPopup').style.display = 'none';
+    document.getElementById('buttons').style.display = 'none';
+}
 
             // Display the current mouse coordinates and zone name
             displayCoordinates(currentZone);
@@ -140,13 +159,20 @@
         }
 
         function mousePressed() {
-            for (let zone of interactionZones) {
-                if (isMouseOver(zone)) {
-                    clickedMessage = zone.message;
-                    break;
-                }
+    for (let zone of interactionZones) {
+        if (isMouseOver(zone)) {
+            clickedMessage = zone.message;
+            clickedZones.add(zone.name);
+
+            if (clickedZones.size === interactionZones.length) {
+                document.getElementById('zoneCount').innerText = clickedZones.size;
+                document.getElementById('endPopup').style.display = 'flex';
+                document.getElementById('buttons').style.display = 'block';
             }
+            break;
         }
+    }
+}
 
         function removePopup() {
             let popup = document.getElementById('popup');
